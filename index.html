@@ -11,19 +11,7 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     
     <!-- Custom Styles -->
-    <style>
-        * { font-family: 'Vazirmatn', system-ui, sans-serif; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; }
-        .modal.active { display: flex; align-items: center; justify-content: center; }
-        .panel { display: none; }
-        .panel.active { display: block; }
-        .status-assigned { background-color: #dbeafe; color: #1e40af; }
-        .status-confirmed { background-color: #dcfce7; color: #166534; }
-        .status-pending { background-color: #fef3c7; color: #92400e; }
-        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .hover-scale:hover { transform: scale(1.02); transition: transform 0.2s ease; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-gray-50">
 
@@ -269,8 +257,8 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-600">مسائل حقوقی</p>
-                            <p class="text-2xl font-bold text-gray-900 mt-1">3</p>
-                            <p class="text-xs text-green-600 mt-1">+1 این ماه</p>
+                            <p id="client-panel-stats-issues" class="text-2xl font-bold text-gray-900 mt-1">0</p>
+                            <p class="text-xs text-green-600 mt-1">&nbsp;</p>
                         </div>
                         <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-lg">
                             <i data-lucide="file-text" class="w-6 h-6 text-white"></i>
@@ -282,8 +270,8 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-600">نوبت‌های آینده</p>
-                            <p class="text-2xl font-bold text-gray-900 mt-1">2</p>
-                            <p class="text-xs text-blue-600 mt-1">هفته آینده</p>
+                            <p id="client-panel-stats-appointments" class="text-2xl font-bold text-gray-900 mt-1">0</p>
+                            <p class="text-xs text-blue-600 mt-1">&nbsp;</p>
                         </div>
                         <div class="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-lg">
                             <i data-lucide="calendar" class="w-6 h-6 text-white"></i>
@@ -357,46 +345,8 @@
                         </button>
                     </div>
                     
-                    <div class="space-y-4">
-                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                            <div class="flex items-start justify-between mb-3">
-                                <h4 class="font-medium text-gray-900">مشکل قرارداد کار</h4>
-                                <span class="px-3 py-1 rounded-full text-xs font-medium status-assigned">تخصیص داده شده</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-3">مشکلی در قرارداد کاری من پیش آمده و نیاز به مشاوره دارم...</p>
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <div class="flex items-center space-x-4 space-x-reverse">
-                                    <span class="flex items-center">
-                                        <i data-lucide="calendar" class="w-3 h-3 ml-1"></i>
-                                        ۱۴۰۳/۱۰/۰۵
-                                    </span>
-                                    <span class="flex items-center">
-                                        <i data-lucide="tag" class="w-3 h-3 ml-1"></i>
-                                        حقوق کار
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                            <div class="flex items-start justify-between mb-3">
-                                <h4 class="font-medium text-gray-900">مسئله طلاق توافقی</h4>
-                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">در حال بررسی</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-3">نیاز به مشاوره در خصوص طلاق توافقی و تقسیم اموال...</p>
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <div class="flex items-center space-x-4 space-x-reverse">
-                                    <span class="flex items-center">
-                                        <i data-lucide="calendar" class="w-3 h-3 ml-1"></i>
-                                        ۱۴۰۳/۱۰/۰۳
-                                    </span>
-                                    <span class="flex items-center">
-                                        <i data-lucide="tag" class="w-3 h-3 ml-1"></i>
-                                        حقوق خانواده
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="client-issues-container" class="space-y-4">
+                        <!-- Issues will be rendered here by JavaScript -->
                     </div>
                 </div>
 
@@ -413,405 +363,144 @@
                         </button>
                     </div>
                     
-                    <div class="space-y-4">
-                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center space-x-3 space-x-reverse">
-                                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold">د</div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900">دکتر احمد محمدی</h4>
-                                        <p class="text-xs text-gray-500">متخصص حقوق کیفری</p>
-                                    </div>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-medium status-confirmed">تایید شده</span>
-                            </div>
-                            <div class="flex items-center space-x-4 space-x-reverse text-sm text-gray-600">
-                                <div class="flex items-center space-x-1 space-x-reverse">
-                                    <i data-lucide="calendar" class="w-4 h-4"></i>
-                                    <span>۱۴۰۳/۱۰/۰۸</span>
-                                </div>
-                                <div class="flex items-center space-x-1 space-x-reverse">
-                                    <i data-lucide="clock" class="w-4 h-4"></i>
-                                    <span>۱۰:۰۰</span>
-                                </div>
-                                <div class="flex items-center space-x-1 space-x-reverse">
-                                    <i data-lucide="video" class="w-4 h-4"></i>
-                                    <span>آنلاین</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center space-x-3 space-x-reverse">
-                                    <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">د</div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900">دکتر فاطمه احمدی</h4>
-                                        <p class="text-xs text-gray-500">متخصص حقوق خانواده</p>
-                                    </div>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-medium status-pending">در انتظار تایید</span>
-                            </div>
-                            <div class="flex items-center space-x-4 space-x-reverse text-sm text-gray-600">
-                                <div class="flex items-center space-x-1 space-x-reverse">
-                                    <i data-lucide="calendar" class="w-4 h-4"></i>
-                                    <span>۱۴۰۳/۱۰/۱۰</span>
-                                </div>
-                                <div class="flex items-center space-x-1 space-x-reverse">
-                                    <i data-lucide="clock" class="w-4 h-4"></i>
-                                    <span>۱۴:۰۰</span>
-                                </div>
-                                <div class="flex items-center space-x-1 space-x-reverse">
-                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                    <span>حضوری</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="client-appointments-container" class="space-y-4">
+                        <!-- Appointments will be rendered here by JavaScript -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Continue with other panels and modals... -->
-    
-    <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-        
-        // Global Application State
-        const AppState = {
-            currentUser: null,
-            selectedLawyer: null,
-            currentPanel: 'landing'
-        };
-        
-        // Authentication Module
-        const AuthModule = {
-            showLoginModal() {
-                ModalModule.show('login-modal');
-            },
-            
-            showRegisterModal() {
-                ModalModule.show('register-modal');
-            },
-            
-            handleLogin(event) {
-                event.preventDefault();
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
-
-                let userRole = 'client';
-                let userName = 'کاربر';
-
-                if (email === 'admin@vekalapp.com') {
-                    userRole = 'admin';
-                    userName = 'مدیر سیستم';
-                } else if (email.includes('lawyer')) {
-                    userRole = 'lawyer';
-                    userName = 'دکتر احمد محمدی';
-                } else {
-                    userRole = 'client';
-                    userName = 'علی احمدی';
-                }
-
-                AppState.currentUser = { email, role: userRole, name: userName };
-                
-                ModalModule.hide('login-modal');
-                PanelModule.show(userRole);
-                NotificationModule.show('با موفقیت وارد شدید');
-                
-                // Update user info in panels
-                this.updateUserInfo();
-            },
-            
-            handleRegister(event) {
-                event.preventDefault();
-                const role = document.getElementById('register-role').value;
-                const name = document.getElementById('register-name').value;
-                const email = document.getElementById('register-email').value;
-
-                AppState.currentUser = { email, role, name };
-                
-                ModalModule.hide('register-modal');
-                PanelModule.show(role);
-                NotificationModule.show('حساب کاربری با موفقیت ایجاد شد');
-                
-                // Update user info in panels
-                this.updateUserInfo();
-            },
-            
-            logout() {
-                AppState.currentUser = null;
-                AppState.selectedLawyer = null;
-                PanelModule.show('landing');
-                NotificationModule.show('با موفقیت خارج شدید');
-            },
-            
-            updateUserInfo() {
-                if (!AppState.currentUser) return;
-                
-                const nameElements = document.querySelectorAll('#client-name, #lawyer-name, #admin-name');
-                const emailElements = document.querySelectorAll('#client-email, #lawyer-email, #admin-email');
-                
-                nameElements.forEach(el => {
-                    if (el) el.textContent = AppState.currentUser.name;
-                });
-                
-                emailElements.forEach(el => {
-                    if (el) el.textContent = AppState.currentUser.email;
-                });
-            }
-        };
-        
-        // Panel Management Module
-        const PanelModule = {
-            show(panelName) {
-                // Hide all panels
-                document.querySelectorAll('.panel, #landing-page').forEach(el => {
-                    el.style.display = 'none';
-                });
-
-                // Show selected panel
-                if (panelName === 'landing') {
-                    document.getElementById('landing-page').style.display = 'block';
-                } else {
-                    const panel = document.getElementById(panelName + '-panel');
-                    if (panel) {
-                        panel.style.display = 'block';
-                        panel.classList.add('animate-fade-in');
-                    }
-                }
-                
-                AppState.currentPanel = panelName;
-                
-                // Reinitialize icons after panel switch
-                setTimeout(() => {
-                    lucide.createIcons();
-                }, 100);
-            }
-        };
-        
-        // Modal Management Module
-        const ModalModule = {
-            show(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.classList.add('active');
-                }
-            },
-            
-            hide(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.classList.remove('active');
-                }
-            },
-            
-            hideAll() {
-                document.querySelectorAll('.modal.active').forEach(modal => {
-                    modal.classList.remove('active');
-                });
-            }
-        };
-        
-        // Notification Module
-        const NotificationModule = {
-            show(message, type = 'success') {
-                const toast = document.getElementById('toast');
-                const toastMessage = document.getElementById('toast-message');
-                
-                if (!toast || !toastMessage) return;
-                
-                toastMessage.textContent = message;
-                
-                // Update toast style based on type
-                toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 z-50 ${
-                    type === 'error' ? 'bg-red-600 text-white' : 
-                    type === 'warning' ? 'bg-yellow-600 text-white' : 
-                    'bg-green-600 text-white'
-                }`;
-                
-                toast.classList.remove('translate-x-full');
-                
-                setTimeout(() => {
-                    toast.classList.add('translate-x-full');
-                }, 3000);
-            }
-        };
-        
-        // Issue Management Module
-        const IssueModule = {
-            showNewIssueModal() {
-                ModalModule.show('new-issue-modal');
-            },
-            
-            handleNewIssue(event) {
-                event.preventDefault();
-                const title = document.getElementById('issue-title').value;
-                const category = document.getElementById('issue-category').value;
-                const description = document.getElementById('issue-description').value;
-
-                if (description.length < 10) {
-                    NotificationModule.show('شرح مسئله باید حداقل ۱۰ کاراکتر باشد', 'error');
-                    return;
-                }
-
-                ModalModule.hide('new-issue-modal');
-                NotificationModule.show('مسئله حقوقی با موفقیت ثبت شد');
-                
-                // Reset form
-                document.getElementById('issue-title').value = '';
-                document.getElementById('issue-category').value = '';
-                document.getElementById('issue-description').value = '';
-                
-                // Show lawyer selection after a short delay
-                setTimeout(() => {
-                    LawyerModule.showSelectionModal();
-                }, 1500);
-            }
-        };
-        
-        // Lawyer Management Module
-        const LawyerModule = {
-            showSelectionModal() {
-                ModalModule.show('lawyer-selection-modal');
-            },
-            
-            selectLawyer(element, lawyerId) {
-                // Remove selection from all lawyers
-                document.querySelectorAll('#lawyer-selection-modal .border-2').forEach(el => {
-                    el.classList.remove('border-blue-500', 'bg-blue-50');
-                    el.classList.add('border-gray-200');
-                });
-
-                // Add selection to clicked lawyer
-                element.classList.remove('border-gray-200');
-                element.classList.add('border-blue-500', 'bg-blue-50');
-                
-                AppState.selectedLawyer = lawyerId;
-            },
-            
-            confirmSelection() {
-                if (!AppState.selectedLawyer) {
-                    NotificationModule.show('لطفاً یک وکیل انتخاب کنید', 'error');
-                    return;
-                }
-
-                ModalModule.hide('lawyer-selection-modal');
-                NotificationModule.show('وکیل با موفقیت انتخاب شد');
-                
-                // Reset selection
-                AppState.selectedLawyer = null;
-            },
-            
-            approveAppointment(button) {
-                const appointmentCard = button.closest('.border');
-                appointmentCard.innerHTML = `
-                    <div class="text-center py-4">
-                        <i data-lucide="check-circle" class="w-8 h-8 text-green-600 mx-auto mb-2"></i>
-                        <p class="text-green-600 font-medium">نوبت با موفقیت تایید شد</p>
-                    </div>
-                `;
-                lucide.createIcons();
-                NotificationModule.show('نوبت با موفقیت تایید شد');
-            },
-            
-            rejectAppointment(button) {
-                const appointmentCard = button.closest('.border');
-                appointmentCard.innerHTML = `
-                    <div class="text-center py-4">
-                        <i data-lucide="x-circle" class="w-8 h-8 text-red-600 mx-auto mb-2"></i>
-                        <p class="text-red-600 font-medium">نوبت رد شد</p>
-                    </div>
-                `;
-                lucide.createIcons();
-                NotificationModule.show('نوبت رد شد');
-            }
-        };
-        
-        // Chat Module
-        const ChatModule = {
-            showModal() {
-                ModalModule.show('chat-modal');
-            },
-            
-            selectChat(chatId) {
-                // Update UI to show selected chat
-                document.querySelectorAll('#chat-modal .w-1\\/3 button').forEach(btn => {
-                    btn.classList.remove('bg-blue-50', 'border', 'border-blue-200');
-                    btn.classList.add('hover:bg-gray-50');
-                });
-                
-                event.target.closest('button').classList.add('bg-blue-50', 'border', 'border-blue-200');
-            },
-            
-            sendMessage(event) {
-                event.preventDefault();
-                const input = document.getElementById('message-input');
-                const message = input.value.trim();
-                
-                if (!message) return;
-
-                const messagesContainer = document.getElementById('chat-messages');
-                const now = new Date();
-                const time = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
-
-                // Add user message
-                const userMessage = document.createElement('div');
-                userMessage.className = 'flex justify-end';
-                userMessage.innerHTML = `
-                    <div class="max-w-xs lg:max-w-md px-4 py-2 rounded-lg bg-blue-600 text-white">
-                        <p class="text-sm">${message}</p>
-                        <p class="text-xs mt-1 text-blue-100">${time}</p>
-                    </div>
-                `;
-                messagesContainer.appendChild(userMessage);
-
-                // Clear input
-                input.value = '';
-
-                // Simulate lawyer response
-                setTimeout(() => {
-                    const lawyerMessage = document.createElement('div');
-                    lawyerMessage.className = 'flex justify-start';
-                    lawyerMessage.innerHTML = `
-                        <div class="max-w-xs lg:max-w-md px-4 py-2 rounded-lg bg-gray-200 text-gray-900">
-                            <p class="text-sm">پیام شما را دریافت کردم. به زودی پاسخ کاملی ارسال خواهم کرد.</p>
-                            <p class="text-xs mt-1 text-gray-500">${time}</p>
+    <!-- پنل وکیل -->
+    <div id="lawyer-panel" class="panel min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <div class="bg-gradient-to-r from-green-600 to-emerald-600 p-2 rounded-lg">
+                            <i data-lucide="briefcase" class="w-8 h-8 text-white"></i>
                         </div>
-                    `;
-                    messagesContainer.appendChild(lawyerMessage);
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                }, 2000);
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-900">وکال‌اپ</h1>
+                            <p class="text-sm text-gray-600">پنل وکیل</p>
+                        </div>
+                    </div>
 
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                NotificationModule.show('پیام ارسال شد');
-            }
-        };
-        
-        // Appointment Module
-        const AppointmentModule = {
-            showModal() {
-                NotificationModule.show('مودال رزرو نوبت (در حال توسعه)');
-            }
-        };
-        
-        // Initialize app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            PanelModule.show('landing');
-            lucide.createIcons();
-            
-            // Close modals when clicking outside
-            document.addEventListener('click', function(event) {
-                if (event.target.classList.contains('modal')) {
-                    event.target.classList.remove('active');
-                }
-            });
-        });
-    </script>
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900" id="lawyer-name"></p>
+                            <p class="text-xs text-gray-500" id="lawyer-email"></p>
+                        </div>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <button onclick="NotificationModule.show('تنظیمات (در حال توسعه)')" class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
+                                <i data-lucide="settings" class="w-5 h-5"></i>
+                            </button>
+                            <button onclick="AuthModule.logout()" class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
+                                <i data-lucide="log-out" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2" id="lawyer-welcome-message">خوش آمدید</h2>
+                <p class="text-gray-600">پرونده‌های خود را مدیریت کنید و با موکلین در ارتباط باشید</p>
+            </div>
+
+            <!-- Lawyer Content -->
+            <div id="lawyer-issues-container" class="space-y-6">
+                <!-- Issues will be rendered here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- پنل ادمین -->
+    <div id="admin-panel" class="panel min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-2 rounded-lg">
+                            <i data-lucide="shield" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-900">وکال‌اپ</h1>
+                            <p class="text-sm text-gray-600">پنل مدیریت</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900" id="admin-name"></p>
+                            <p class="text-xs text-gray-500" id="admin-email"></p>
+                        </div>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <button onclick="AuthModule.logout()" class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
+                                <i data-lucide="log-out" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-7xl mx-auto px-4 py-8">
+             <!-- Admin Content -->
+             <div id="admin-stats-container" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <!-- Stats will be rendered here -->
+             </div>
+             <div id="admin-users-container" class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">کاربران</h3>
+                <!-- Users table will be rendered here -->
+             </div>
+             <div id="admin-issues-container" class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">پرونده‌ها</h3>
+                <!-- Issues table will be rendered here -->
+             </div>
+        </div>
+    </div>
+
+    <!-- Continue with other panels and modals... -->
+    <script src="js/script.js"></script>
 
     <!-- Modals -->
+
+    <!-- Appointment Modal -->
+    <div id="appointment-modal" class="modal">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 p-6 relative">
+            <button onclick="ModalModule.hide('appointment-modal')" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">رزرو نوبت</h2>
+                <p class="text-gray-600">زمان ملاقات با وکیل را مشخص کنید</p>
+            </div>
+            <form id="appointment-form" onsubmit="AppointmentModule.handleBookAppointment(event)" class="space-y-4">
+                <input type="hidden" id="appointment-issue-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">تاریخ</label>
+                    <input type="date" id="appointment-date" class="w-full px-4 py-3 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ساعت</label>
+                    <input type="time" id="appointment-time" class="w-full px-4 py-3 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">نوع ملاقات</label>
+                    <select id="appointment-type" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                        <option value="online">آنلاین</option>
+                        <option value="in-person">حضوری</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-medium">
+                    رزرو نهایی
+                </button>
+            </form>
+        </div>
+    </div>
     
     <!-- Login Modal -->
     <div id="login-modal" class="modal">
@@ -890,7 +579,7 @@
                 <p class="text-gray-600">حساب کاربری جدید ایجاد کنید</p>
             </div>
 
-            <form onsubmit="AuthModule.handleRegister(event)" class="space-y-4">
+            <form id="register-form" onsubmit="AuthModule.handleRegister(event)" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">نوع کاربر</label>
                     <select id="register-role" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -943,7 +632,7 @@
                 <p class="text-gray-600">مشکل حقوقی خود را به تفصیل شرح دهید</p>
             </div>
 
-            <form onsubmit="IssueModule.handleNewIssue(event)" class="space-y-6">
+            <form id="new-issue-form" onsubmit="IssueModule.handleNewIssue(event)" class="space-y-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">عنوان مسئله *</label>
                     <input type="text" id="issue-title" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="عنوان کوتاهی برای مسئله خود وارد کنید" required>
@@ -1023,7 +712,7 @@
                     <h3 class="text-lg font-semibold text-gray-900">پیشنهادات هوش مصنوعی</h3>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="lawyer-selection-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="border-2 rounded-lg p-4 cursor-pointer transition-all border-purple-500 bg-purple-50 ring-2 ring-purple-200" onclick="LawyerModule.selectLawyer(this, '1')">
                         <div class="flex items-center space-x-1 space-x-reverse mb-2">
                             <i data-lucide="star" class="w-4 h-4 text-yellow-500 fill-current"></i>
